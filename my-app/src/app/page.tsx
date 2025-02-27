@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { differenceInMonths, addYears } from 'date-fns';
 
-const LifeGrid = () => {
-  const [birthday, setBirthday] = useState(null);
+export default function LifeGrid() {
+  const [birthday, setBirthday] = useState<Date | null>(null);
   const [monthsLived, setMonthsLived] = useState(0);
   const [totalMonths, setTotalMonths] = useState(1200); // 100 years * 12 months
 
@@ -27,9 +27,9 @@ const LifeGrid = () => {
   }, [birthday]);
 
   // Handle birthday input
-  const handleBirthdayChange = (e) => {
+  const handleBirthdayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value);
-    if (!isNaN(date)) {
+    if (!isNaN(date.getTime())) {
       setBirthday(date);
     }
   };
@@ -77,6 +77,4 @@ const LifeGrid = () => {
       )}
     </div>
   );
-};
-
-export default LifeGrid;
+}
