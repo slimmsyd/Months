@@ -3,7 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import { differenceInMonths, addYears } from 'date-fns';
 
-export default function LifeGrid() {
+// Move grid generation to a separate function outside the component
+function generateGrid(totalMonths: number, monthsLived: number) {
+  const grid = [];
+  for (let i = 1; i <= totalMonths; i++) {
+    const isPast = i <= monthsLived;
+    grid.push(
+      <div
+        key={i}
+        className={isPast ? 'past-month' : 'future-month'}
+        title={`Month ${i}`}
+      />
+    );
+  }
+  return grid;
+}
+
+function LifeGrid() {
   const [birthday, setBirthday] = useState<Date | null>(null);
   const [monthsLived, setMonthsLived] = useState(0);
   const [totalMonths, setTotalMonths] = useState(1200); // 100 years * 12 months
@@ -34,18 +50,7 @@ export default function LifeGrid() {
     }
   };
 
-  // Generate grid: 1,200 cells
-  const grid = [];
-  for (let i = 1; i <= totalMonths; i++) {
-    const isPast = i <= monthsLived;
-    grid.push(
-      <div
-        key={i}
-        className={isPast ? 'past-month' : 'future-month'}
-        title={`Month ${i}`}
-      />
-    );
-  }
+  const grid = generateGrid(totalMonths, monthsLived);
 
   return (
     <div className="life-grid">
@@ -77,4 +82,6 @@ export default function LifeGrid() {
       )}
     </div>
   );
-} 
+}
+
+export default LifeGrid; 
